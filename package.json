@@ -2,6 +2,12 @@
   "name": "hardhat-project",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@types/node": "^20.5.3",
     "hardhat": "^2.17.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
+    "@t3-oss/env-nextjs": "^0.6.1",
+    "zod": "^3.22.2"
   }
 }
