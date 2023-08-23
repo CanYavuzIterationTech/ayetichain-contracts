@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
-
 contract Sukuk is ERC20, ERC20Burnable {
     struct RentContract {
         uint256 amount; // 3000 2200 365 gün için 365 gün %10 faiz olmayan faiz
@@ -70,8 +69,6 @@ contract Sukuk is ERC20, ERC20Burnable {
             "Duration must be between 30 and 365 days"
         );
 
-   
-
         //console.log(_amount);
         //console.log(tokenBalance[msg.sender]);
         //console.log(calculateThreeTwos(_amount));
@@ -79,12 +76,13 @@ contract Sukuk is ERC20, ERC20Burnable {
             calculateThreeTwos(_amount) <= tokenBalance[msg.sender],
             "Insufficient balance"
         );
+        //console.log("Block Timestamp: ", block.timestamp);
 
         RentContract memory newRentContract = RentContract({
             amount: computeRent(_duration, _amount),
             amountOriginal: _amount,
             startDate: block.timestamp,
-            endDate: block.timestamp + 365 days,
+            endDate: block.timestamp + _duration,
             isPaid: false
         });
 
@@ -127,16 +125,19 @@ contract Sukuk is ERC20, ERC20Burnable {
         rentalIncome += rentContracts[msg.sender][_index].amount;
     }
 
+    function listRents(
+        address _owner
+    ) public view returns (RentContract[] memory) {
+        return rentContracts[_owner];
+    }
+
     function supply(uint256 _amount) public {
         require(tokenBalance[msg.sender] >= _amount, "Transfer failed");
 
-  
         tokenBalance[msg.sender] -= _amount;
 
         // 100 supply 1000 ETH
         // 2000 ETH 200 supply LP Token
-
-
 
         totalSupplied += calculateAmountToBeMinted(
             _amount,
@@ -158,7 +159,6 @@ contract Sukuk is ERC20, ERC20Burnable {
             totalSupply(),
             totalSupplied
         );
-
 
         tokenBalance[msg.sender] += amountToBeEarned;
 

@@ -69,8 +69,10 @@ describe("Sukut", function () {
       console.log("Total supplied: ", await sukuk.totalSupplied());
       const tx = await sukuk
         .connect(otherAccount)
-        .createRentContract(ethers.parseEther("1000"), 365 * 60 * 60 * 24);
+        .createRentContract(ethers.parseEther("1000"), 30 * 60 * 60 * 24);
       await tx.wait();
+
+      console.log("rents: ",await sukuk.listRents(otherAccount.address))
 
     });
 
